@@ -39,7 +39,7 @@ It eliminates the need for expensive hardware Stream Deck devices by using a **m
                ↓
     [ Desktop Companion App ]
                ↓
-[ OS APIs → Applications / System ]
+ [ OS APIs → Applications / System ]
 
 
 ---
