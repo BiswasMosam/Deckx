@@ -33,13 +33,13 @@ It eliminates the need for expensive hardware Stream Deck devices by using a **m
 
 ## 🏗️ System Architecture
 
-     [ Mobile App (Flutter) ]
-               ↓
-        WebSocket / Wi-Fi
-               ↓
-    [ Desktop Companion App ]
-               ↓
- [ OS APIs → Applications / System ]
+              [  Mobile App (Flutter) ]
+                         ↓
+                 WebSocket / Wi-Fi
+                         ↓
+             [ Desktop Companion App ]
+                         ↓
+        [ OS APIs → Applications / System ]
 
 
 ---
