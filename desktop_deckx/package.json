@@ -1,0 +1,16 @@
+{
+  "name": "desktop_deckx",
+  "version": "1.0.0",
+  "description": "DeckX Desktop Companion",
+  "main": "main.js",
+  "type": "commonjs",
+  "dependencies": {
+    "ws": "^8.16.0",
+    "open": "^9.1.0",
+    "node-key-sender": "^1.0.11",
+    "node-notifier": "^10.0.1"
+  },
+  "scripts": {
+    "start": "node main.js"
+  }
+}
