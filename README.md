@@ -61,6 +61,7 @@ It eliminates the need for expensive hardware Stream Deck devices by using a **m
 ## 📂 Project Structure
 
 ### Mobile App
+
 mobile_stream_deck/
 │── lib/
 │ ├── screens/
@@ -72,6 +73,7 @@ mobile_stream_deck/
 
 
 ### Desktop App
+
 desktop_stream_deck/
 │── src/
 │ ├── websocket/
