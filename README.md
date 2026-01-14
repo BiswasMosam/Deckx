@@ -112,11 +112,6 @@ cd mobile_stream_deck
 flutter pub get
 flutter run
 
-
-# mobile_deckx
-
-A new Flutter project.
-
 ## Getting Started
 
 This project is a starting point for a Flutter application.
