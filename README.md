@@ -106,7 +106,7 @@ desktop_stream_deck/
 ## 🚀 Installation (Development)
 
 ### Mobile App
-```bash
+
 git clone https://github.com/your-username/controldeck.git
 cd mobile_stream_deck
 flutter pub get
