@@ -1,126 +1,98 @@
-# 🎛️ ControlDeck – Mobile Stream Deck App
+# Dacx
 
-ControlDeck is a **mobile-based Stream Deck application** that turns your smartphone into a **powerful, customizable control panel** for controlling applications, shortcuts, and system actions on a connected computer.
+Turn your phone into a wireless control deck for your PC — volume, brightness, app shortcuts, and Spotify, all from your pocket.
 
-It eliminates the need for expensive hardware Stream Deck devices by using a **mobile app + desktop companion architecture**.
-
----
-
-## 📌 Features
-
-### 🎚 Stream Deck Core Features
-- Customizable button grid
-- Multiple profiles (Gaming, Coding, Streaming, etc.)
-- App launching on PC
-- Keyboard shortcuts & macros
-- Media controls (Play, Pause, Volume)
-- Folder-based buttons
-- Long-press & multi-action buttons
-
-### 📱 Mobile App Features
-- Modern dark-mode UI
-- Smooth animations & haptic feedback
-- Profile switching with swipe gestures
-- Local storage of layouts
-- Secure device pairing
-
-### 🖥 Desktop Companion Features
-- Receives commands from mobile app
-- Executes OS-level actions
-- Cross-platform support (Windows / macOS / Linux)
+No hardware. No cloud. Just your local WiFi.
 
 ---
 
-## 🏗️ System Architecture
+## How it works
 
-              [  Mobile App (Flutter) ]
-                         ↓
-                 WebSocket / Wi-Fi
-                         ↓
-             [ Desktop Companion App ]
-                         ↓
-        [ OS APIs → Applications / System ]
+```
+┌─────────────────┐          WiFi (LAN only)         ┌──────────────────────┐
+│   Dacx Mobile   │ ◄──────── WebSocket ────────────► │   Dacx Desktop       │
+│   (Flutter)     │            port 9876              │   (Python)           │
+│                 │         nothing leaves            │                      │
+│  tap buttons    │            your router            │  controls your PC    │
+└─────────────────┘                                   └──────────────────────┘
+```
 
-
----
-
-## 🛠 Tech Stack
-
-### 📱 Mobile Application
-- Framework: Flutter
-- Language: Dart
-- Platform: Android (iOS – future scope)
-
-### 🖥 Desktop Application
-- Runtime: Node.js
-- Framework: Electron
-- Communication: WebSocket
+Both devices must be on the same WiFi network. The desktop app generates a **6-digit pairing code** and a **QR code** — scan or enter it on mobile to connect instantly.
 
 ---
 
-## 📂 Project Structure
+## Features
 
-### Mobile App
+| Feature | Desktop | Mobile |
+|---|---|---|
+| Volume control (up / down / mute / set) | Windows Core Audio (pycaw) | Slider + buttons |
+| Brightness control | WMI / screen-brightness-control | Slider + buttons |
+| App shortcuts | Configurable list | Custom button grid |
+| Spotify control | Spotify Web API (spotipy) | Special Spotify UI |
+| Media keys (play / pause / next / prev) | ctypes keybd_event | Buttons |
+| Pairing | 6-digit code + QR | Scan or type code |
 
-mobile_stream_deck/
-│── lib/
-│ ├── screens/
-│ ├── widgets/
-│ ├── services/
-│ ├── models/
-│── assets/
-│── pubspec.yaml
-
-
-### Desktop App
-
-desktop_stream_deck/
-│── src/
-│ ├── websocket/
-│ ├── actions/
-│── main.js
-│── package.json
-
+> Spotify is the only feature that touches the internet (Spotify's own API). Everything else is fully local.
 
 ---
 
-## ⚙️ How It Works
+## Desktop App
 
-1. Launch the desktop companion app
-2. Open the ControlDeck mobile app
-3. Pair devices using local Wi-Fi
-4. Tap buttons on the phone
-5. Actions are executed instantly on the PC
+Built with **Python** + **CustomTkinter**. Runs on Windows.
+
+### Setup
+
+```bash
+cd desktop
+pip install -r requirements.txt
+python main.py
+```
+
+### Structure
+
+```
+desktop/
+├── main.py               # Entry point
+├── requirements.txt
+└── dacx/
+    ├── app_window.py     # Full CustomTkinter UI
+    ├── ws_server.py      # asyncio WebSocket server (LAN)
+    ├── actions.py        # Volume · Brightness · App launcher · Media keys
+    └── spotify_ctrl.py   # Spotify OAuth + playback control
+```
+
+### Spotify setup
+
+1. Go to [developer.spotify.com/dashboard](https://developer.spotify.com/dashboard)
+2. Create an app → set redirect URI to `http://localhost:8888/callback`
+3. Copy Client ID and Client Secret
+4. Click **Connect** in the Dacx desktop app and paste them in
 
 ---
 
-## 🔐 Security
+## Mobile App
 
-- Local network communication only
-- One-time pairing mechanism
-- Permission-based action execution
-- No cloud dependency (offline-first)
+Built with **Flutter**. Connects over LAN — no internet required.
+
+> Coming soon.
 
 ---
 
-## 🚀 Installation (Development)
+## Tech Stack
 
-### Mobile App
+| Layer | Technology |
+|---|---|
+| Desktop UI | Python · CustomTkinter |
+| Desktop system actions | pycaw · screen-brightness-control · ctypes |
+| Desktop ↔ Mobile transport | asyncio WebSocket (`ws`) |
+| Spotify | spotipy · Spotify Web API |
+| Mobile | Flutter · Dart |
+| Pairing | 6-digit local code + QR (LAN only) |
 
-git clone https://github.com/your-username/controldeck.git
-cd mobile_stream_deck
-flutter pub get
-flutter run
+---
 
-## Getting Started
+## Privacy
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- No data is sent to any server other than Spotify's own API (for Spotify control)
+- The pairing code, QR code, and all commands are generated and transmitted locally
+- No accounts, no sign-up, no telemetry
